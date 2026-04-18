@@ -1,66 +1,49 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { createServiceRoleClient } from '@/lib/supabase'
+import styles from './page.module.scss'
 
-export default function Home() {
+export default async function Home() {
+  const supabase = createServiceRoleClient()
+
+  const { data: events } = await supabase
+    .from('events')
+    .select('id, slug, title, description, date, capacity, price_cents, image_url')
+    .eq('published', true)
+    .order('date', { ascending: true })
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+    <main className={styles.page}>
+      <h1 className={styles.heading}>Upcoming Events</h1>
+
+      {!events?.length && <p>No events yet.</p>}
+
+      <div className={styles.grid}>
+        {events?.map((event) => (
+          <a key={event.id} href={`/events/${event.slug}`} className={styles.card}>
+            {event.image_url && (
+              <img src={event.image_url} alt={event.title} className={styles.image} />
+            )}
+            <div className={styles.body}>
+              <h2 className={styles.title}>{event.title}</h2>
+              <p className={styles.date}>
+                {new Date(event.date).toLocaleDateString(undefined, {
+                  weekday: 'short',
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </p>
+              {event.description && (
+                <p className={styles.description}>{event.description}</p>
+              )}
+              <p className={styles.price}>
+                {event.price_cents === 0
+                  ? 'Free'
+                  : `$${(event.price_cents / 100).toFixed(2)}`}
+              </p>
+            </div>
           </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+        ))}
+      </div>
+    </main>
+  )
 }
