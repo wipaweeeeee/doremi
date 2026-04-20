@@ -1,0 +1,121 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 100;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background: #fff;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 101;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+
+  &.open {
+    transform: translateX(0);
+  }
+}
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #444;
+  line-height: 1;
+  padding: 4px 8px;
+
+  &:hover {
+    color: #000;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+.body {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title {
+  font-size: 24px;
+  margin: 0;
+}
+
+.date {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.price {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.description {
+  font-size: 15px;
+  color: #444;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.tickets {
+  margin-top: 8px;
+  border-top: 1px solid #e5e5e5;
+  padding-top: 16px;
+}
+
+.ticketsHeading {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+}
+
+.soldOut {
+  font-size: 15px;
+  font-weight: 600;
+  color: #999;
+  margin: 0;
+}
+
+.ticketRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}

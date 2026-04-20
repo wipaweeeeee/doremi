@@ -1,0 +1,30 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 14px;
+  }
+
+  th {
+    font-weight: 600;
+    color: #666;
+  }
+}
+
+.editButton {
+  padding: 4px 12px;
+  font-size: 13px;
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #000;
+  }
+}

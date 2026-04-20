@@ -1,5 +1,19 @@
 import Stripe from 'stripe'
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2026-03-25.dahlia',
-})
+const globalForStripe = globalThis
+
+export const stripe =
+  globalForStripe.stripe ??
+  new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2026-03-25.dahlia',
+  })
+
+if (process.env.NODE_ENV !== 'production') globalForStripe.stripe = stripe
+
+export function constructWebhookEvent(rawBody, signature) {
+  return stripe.webhooks.constructEvent(
+    rawBody,
+    signature,
+    process.env.STRIPE_WEBHOOK_SECRET
+  )
+}

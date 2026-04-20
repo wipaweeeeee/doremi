@@ -1,5 +1,6 @@
 import { createServiceRoleClient } from '@/lib/supabase'
-import EventForm from './EventForm'
+import AdminEventsTable from './AdminEventsTable'
+import AdminCreateModal from './AdminCreateModal'
 import LogoutButton from './LogoutButton'
 import styles from './page.module.scss'
 
@@ -19,33 +20,9 @@ export default async function AdminPage() {
 
       <h2>Upcoming Events</h2>
       {error && <p>Failed to load events: {error.message}</p>}
-      {!error && events?.length === 0 && <p>No upcoming events.</p>}
-      {events?.length > 0 && (
-        <table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Date</th>
-              <th>Capacity</th>
-              <th>Price</th>
-              <th>Bookings</th>
-            </tr>
-          </thead>
-          <tbody>
-            {events.map((event) => (
-              <tr key={event.id}>
-                <td>{event.title}</td>
-                <td>{new Date(event.date).toLocaleString()}</td>
-                <td>{event.capacity}</td>
-                <td>${(event.price_cents / 100).toFixed(2)}</td>
-                <td>{event.bookings[0]?.count ?? 0}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      {!error && <AdminEventsTable initialEvents={events ?? []} />}
 
-      <EventForm />
+      <AdminCreateModal />
     </main>
   )
 }
