@@ -10,15 +10,14 @@ export default async function AdminPage() {
   const { data: events, error } = await supabase
     .from('events')
     .select('*, bookings(count)')
-    .gte('date', new Date().toISOString())
-    .order('date', { ascending: true })
+    .order('date', { ascending: false })
 
   return (
     <main className={styles.page}>
       <LogoutButton />
       <h1>Admin</h1>
 
-      <h2>Upcoming Events</h2>
+      <h2>All Events</h2>
       {error && <p>Failed to load events: {error.message}</p>}
       {!error && <AdminEventsTable initialEvents={events ?? []} />}
 

@@ -9,7 +9,7 @@ export default async function Home() {
     .from('events')
     .select('id, slug, title, description, date, capacity, image_url, ticket_types(id, name, price_cents), bookings(count)')
     .eq('published', true)
-    .order('date', { ascending: true })
+    .order('date', { ascending: false })
 
   return (
     <main className={styles.page}>
